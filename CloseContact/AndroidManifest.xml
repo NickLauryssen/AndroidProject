@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="be.xios.closecontact"
+    package="be.xios.activities"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="14" />
-
+    
+    <uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
+	<uses-permission android:name="android.permission.WRITE_CONTACTS"></uses-permission>
+	
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="be.xios.closecontact.MainMenuActivity"
+            android:name="be.xios.activities.MainMenuActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,27 +26,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="be.xios.closecontact.PeopleActivity"
+            android:name="be.xios.activities.PeopleActivity"
             android:label="@string/title_activity_people" >
         </activity>
         <activity
-            android:name="be.xios.closecontact.CompaniesActivity"
+            android:name="be.xios.activities.CompaniesActivity"
             android:label="@string/title_activity_companies" >
         </activity>
         <activity
-            android:name="be.xios.closecontact.VisitedActivity"
+            android:name="be.xios.activities.VisitedActivity"
             android:label="@string/title_activity_visited" >
         </activity>
         <activity
-            android:name="be.xios.closecontact.ContactsActivity"
+            android:name="be.xios.activities.ContactsActivity"
             android:label="@string/title_activity_contacts" >
         </activity>
         <activity
-            android:name="be.xios.closecontact.EditCardActivity"
+            android:name="be.xios.activities.EditCardActivity"
             android:label="@string/title_activity_edit_card" >
         </activity>
         <activity
-            android:name="be.xios.closecontact.SettingsActivity"
+            android:name="be.xios.activities.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
     </application>
