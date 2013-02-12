@@ -24,9 +24,9 @@ public class EditCardActivity extends Activity
         setContentView(R.layout.layout_buttonlist);
         
         listButtons = new ArrayList<CustomButton>();
-        listButtons.add(new CustomButton("Edit details", "Edit your contact details", MainMenuActivity.class, R.drawable.ic_people, "normal"));
-        listButtons.add(new CustomButton("Change colours", "Choose another color scheme", MainMenuActivity.class, R.drawable.ic_people, "normal"));
-        listButtons.add(new CustomButton("Change design", "Choose a different design", MainMenuActivity.class, R.drawable.ic_factory, "normal"));
+        listButtons.add(new CustomButton("Edit details", "Edit your contact details", MainMenuActivity.class, R.drawable.ic_details, "normal"));
+        listButtons.add(new CustomButton("Change colors", "Choose another color scheme", MainMenuActivity.class, R.drawable.ic_colors, "normal"));
+        listButtons.add(new CustomButton("Change design", "Choose a different design", MainMenuActivity.class, R.drawable.ic_design, "normal"));
                 
         CustomAdapter custAd = new CustomAdapter(this, this.listButtons);
         ListView lv_array = (ListView) findViewById(R.id.listViewMainMenu);

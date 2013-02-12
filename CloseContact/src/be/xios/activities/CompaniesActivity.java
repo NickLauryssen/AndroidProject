@@ -24,9 +24,9 @@ public class CompaniesActivity extends Activity
         setContentView(R.layout.layout_buttonlist);
         
         listButtons = new ArrayList<CustomButton>();
-        listButtons.add(new CustomButton("Xios Hogeschool", "You're here", MainMenuActivity.class, R.drawable.ic_people, "normal"));
-        listButtons.add(new CustomButton("Uhasselt", "500m", MainMenuActivity.class, R.drawable.ic_people, "normal"));
-        listButtons.add(new CustomButton("KHLim", "800m", MainMenuActivity.class, R.drawable.ic_people, "normal"));
+        listButtons.add(new CustomButton("Xios Hogeschool", "You're here", MainMenuActivity.class, R.drawable.ic_school, "normal"));
+        listButtons.add(new CustomButton("Uhasselt", "500m", MainMenuActivity.class, R.drawable.ic_school, "normal"));
+        listButtons.add(new CustomButton("KHLim", "800m", MainMenuActivity.class, R.drawable.ic_school, "normal"));
                 
         CustomAdapter custAd = new CustomAdapter(this, this.listButtons);
         ListView lv_array = (ListView) findViewById(R.id.listViewMainMenu);

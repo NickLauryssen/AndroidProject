@@ -24,10 +24,10 @@ public class SettingsActivity extends Activity
         setContentView(R.layout.layout_buttonlist);
         
         listButtons = new ArrayList<CustomButton>();
-        listButtons.add(new CustomButton("Visible to others", "Let other people find you", MainMenuActivity.class, R.drawable.ic_people, "normal"));
-        listButtons.add(new CustomButton("Remember places", "Save the places you visited", MainMenuActivity.class, R.drawable.ic_people, "normal"));
-        listButtons.add(new CustomButton("Visit duration", "Minimum time for a visit to be saved", MainMenuActivity.class, R.drawable.ic_people, "normal"));
-        listButtons.add(new CustomButton("Contact notifier", "Notify me when a contact is nearby", MainMenuActivity.class, R.drawable.ic_people, "normal"));
+        listButtons.add(new CustomButton("Visible to others", "Let other people find you", MainMenuActivity.class, R.drawable.ic_checkbox_true, "normal"));
+        listButtons.add(new CustomButton("Remember places", "Save the places you visited", MainMenuActivity.class, R.drawable.ic_checkbox_true, "normal"));
+        listButtons.add(new CustomButton("Visit duration", "Minimum time for a visit to be saved", MainMenuActivity.class, R.drawable.ic_checkbox_false, "normal"));
+        listButtons.add(new CustomButton("Contact notifier", "Notify me when a contact is nearby", MainMenuActivity.class, R.drawable.ic_checkbox_false, "normal"));
         
         CustomAdapter custAd = new CustomAdapter(this, this.listButtons);
         ListView lv_array = (ListView) findViewById(R.id.listViewMainMenu);

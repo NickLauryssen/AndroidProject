@@ -24,8 +24,8 @@ public class VisitedActivity extends Activity
         setContentView(R.layout.layout_buttonlist);
         
         listButtons = new ArrayList<CustomButton>();
-        listButtons.add(new CustomButton("Xios Hogeschool", "Visiting right now", MainMenuActivity.class, R.drawable.ic_people, "normal"));
-        listButtons.add(new CustomButton("McDonalds", "Visited yesterday at 1:00pm", MainMenuActivity.class, R.drawable.ic_people, "normal"));
+        listButtons.add(new CustomButton("Xios Hogeschool", "Visiting right now", MainMenuActivity.class, R.drawable.ic_school, "normal"));
+        listButtons.add(new CustomButton("McDonalds", "Visited yesterday at 1:00pm", MainMenuActivity.class, R.drawable.ic_store, "normal"));
                 
         CustomAdapter custAd = new CustomAdapter(this, this.listButtons);
         ListView lv_array = (ListView) findViewById(R.id.listViewMainMenu);

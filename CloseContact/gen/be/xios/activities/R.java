@@ -17,12 +17,20 @@ public final class R {
         public static final int btn_green=0x7f020000;
         public static final int btn_white=0x7f020001;
         public static final int ic_business_card=0x7f020002;
-        public static final int ic_contacts=0x7f020003;
-        public static final int ic_factory=0x7f020004;
-        public static final int ic_launcher=0x7f020005;
-        public static final int ic_location=0x7f020006;
-        public static final int ic_people=0x7f020007;
-        public static final int ic_settings=0x7f020008;
+        public static final int ic_checkbox_false=0x7f020003;
+        public static final int ic_checkbox_true=0x7f020004;
+        public static final int ic_colors=0x7f020005;
+        public static final int ic_contacts=0x7f020006;
+        public static final int ic_design=0x7f020007;
+        public static final int ic_details=0x7f020008;
+        public static final int ic_factory=0x7f020009;
+        public static final int ic_launcher=0x7f02000a;
+        public static final int ic_location=0x7f02000b;
+        public static final int ic_people=0x7f02000c;
+        public static final int ic_save=0x7f02000d;
+        public static final int ic_school=0x7f02000e;
+        public static final int ic_settings=0x7f02000f;
+        public static final int ic_store=0x7f020010;
     }
     public static final class id {
         public static final int button=0x7f080001;

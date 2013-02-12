@@ -26,7 +26,7 @@ public class ContactsActivity extends Activity
         listButtons = new ArrayList<CustomButton>();
         listButtons.add(new CustomButton("Nick Lauryssen", "Show Nicks business card", MainMenuActivity.class, R.drawable.ic_people, "normal"));
         listButtons.add(new CustomButton("Robin Goris", "Show Robins business card", MainMenuActivity.class, R.drawable.ic_people, "normal"));
-        listButtons.add(new CustomButton("Xios Hogeschool", "Show Xios' contact details", MainMenuActivity.class, R.drawable.ic_factory, "normal"));
+        listButtons.add(new CustomButton("Xios Hogeschool", "Show Xios' contact details", MainMenuActivity.class, R.drawable.ic_school, "normal"));
                 
         CustomAdapter custAd = new CustomAdapter(this, this.listButtons);
         ListView lv_array = (ListView) findViewById(R.id.listViewMainMenu);
