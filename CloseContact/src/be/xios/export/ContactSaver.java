@@ -10,13 +10,13 @@ public class ContactSaver
 {
 	ContentResolver contentResolver;
 	
-	String DisplayName = "XYZ";
+	String DisplayName = "testuser";
     String MobileNumber = "123456";
     String HomeNumber = "1111";
     String WorkNumber = "2222";
-    String emailID = "email@nomail.com";
-    String company = "bad";
-    String jobTitle = "abcd";
+    String emailID = "test@closecontact.com";
+    String company = "closecontact";
+    String jobTitle = "testuser";
     
     public ContactSaver(ContentResolver contentResolver)
     {
