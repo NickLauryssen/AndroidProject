@@ -4,19 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import be.xios.activities.GpsService.LocalBinder;
 import be.xios.model.CustomButton;
 
 public class MainMenuActivity extends Activity 
 {
 	private List<CustomButton> listButtons;
-
+	private Intent intent;
+	GpsService gps;
+	boolean mBound = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -36,6 +44,10 @@ public class MainMenuActivity extends Activity
         lv_array.setAdapter(custAd);
         
         lv_array.setOnItemClickListener(new ListViewHandler());
+        
+		intent = new Intent(this, GpsService.class);
+		this.getApplicationContext();
+		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 	}
 
 	@Override
@@ -45,6 +57,16 @@ public class MainMenuActivity extends Activity
         return true;
 	}
 
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		if (mBound) {
+	        unbindService(mConnection);
+	        mBound = false;
+	    }
+	}
+	
     private class ListViewHandler implements OnItemClickListener
     {
 		@Override
@@ -60,4 +82,24 @@ public class MainMenuActivity extends Activity
 			}		
 		}    	
     }
+    
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+		@Override
+		public void onServiceConnected(ComponentName className,
+                IBinder service) {
+			LocalBinder binder = (LocalBinder) service;
+            gps = binder.getService();
+            mBound = true;
+            			
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			
+			mBound = false;
+		}
+    	
+    };
+    
 }
