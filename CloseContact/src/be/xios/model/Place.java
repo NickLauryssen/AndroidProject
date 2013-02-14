@@ -10,15 +10,17 @@ public class Place {
 	private String icon;
 	private String address;
 	private String type;
+	private int distance;
 
 	public Place(String id, String name, String latitude, String longitude,
-			String vicinity, String type) {
+			String vicinity, String type, int distance) {
 		this.id = id;
 		this.name = name;
 		this.address = vicinity;
 		this.latitude = Double.valueOf(latitude);
 		this.longitude = Double.valueOf(longitude);
 		this.type = type;
+		this.distance = distance;
 	}
 
 	public String getIcon() {
@@ -83,6 +85,14 @@ public class Place {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public int getDistance() {
+		return distance;
+	}
+
+	public void setDistance(int distance) {
+		this.distance = distance;
 	}
 
 }

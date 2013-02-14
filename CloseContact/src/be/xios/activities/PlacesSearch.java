@@ -44,7 +44,7 @@ public class PlacesSearch extends AsyncTask<String, Void, List<Place>> {
 	protected List<Place> doInBackground(String... params) {
 
 		String url = "https://maps.googleapis.com/maps/api/place/search/json?location="
-				+ l.getLatitude() + "," + l.getLongitude() + "&radius=300"
+				+ l.getLatitude() + "," + l.getLongitude() + "&radius=300&rankBy=distance"
 
 				+ "&sensor=true&key=AIzaSyBJLs5OG75oQoph-RSu2UdHXudAoSi9xgw";
 		// HTTP
@@ -92,9 +92,9 @@ public class PlacesSearch extends AsyncTask<String, Void, List<Place>> {
 				String lat = loc.getString("lat");
 
 				String lng = loc.getString("lng");
-
-				//Log.d("test", name);
-				Place place = new Place(id, name, lat, lng, vicinity, type);
+				int dist = distFrom(Double.parseDouble(lat), Double.parseDouble(lng), l.getLatitude(), l.getLongitude());
+				
+				Place place = new Place(id, name, lat, lng, vicinity, type,dist);
 				plaatsLijst.add(place);
 			}
 
@@ -106,6 +106,22 @@ public class PlacesSearch extends AsyncTask<String, Void, List<Place>> {
 		return plaatsLijst;
 	}
 
+	//afstand berekenen
+	private static int distFrom(double lat1, double lng1, double lat2, double lng2) {
+	    double earthRadius = 3958.75;
+	    double dLat = Math.toRadians(lat2-lat1);
+	    double dLng = Math.toRadians(lng2-lng1);
+	    double sindLat = Math.sin(dLat / 2);
+	    double sindLng = Math.sin(dLng / 2);
+	    double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
+	            * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
+	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+	    int dist = (int) ( (earthRadius * c) * 1000);
+	    
+	    return dist;
+	    
+	}
+	
 
 	@Override
 	protected void onPostExecute(List<Place> result) {

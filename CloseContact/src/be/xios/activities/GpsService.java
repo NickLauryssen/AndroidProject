@@ -1,6 +1,7 @@
 package be.xios.activities;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -9,6 +10,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Criteria;
+import android.location.GpsSatellite;
+import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -26,35 +29,49 @@ public class GpsService extends Service implements LocationListener {
 	private Criteria crit;
 	private Location loc = null;
 	private List<Place> lijst;
+	private Boolean gpsOn = false;
+	private Boolean gpsGotSignal = false;
 
 	// The minimum distance to change Updates in meters
-	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // meters
+	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // meters
 
 	// The minimum time between updates in milliseconds
-	private static final long MIN_TIME_BW_UPDATES = 5000;
+	private static final long MIN_TIME_BW_UPDATES = 5000; // 10sec
 
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
+
 		locMan = (LocationManager) this
 				.getSystemService(Context.LOCATION_SERVICE);
 		crit = new Criteria();
 		crit.setAccuracy(Criteria.ACCURACY_FINE);
 
-		String best = locMan.getBestProvider(crit, true);
-		prov = locMan.getProvider(best);
+		locMan.addGpsStatusListener(gpsListener);
+		gpsOn = locMan.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-		if (prov != null) {
-			locMan.requestLocationUpdates(prov.getName(),
-					MIN_DISTANCE_CHANGE_FOR_UPDATES, MIN_TIME_BW_UPDATES, this);
+	}
 
-		} else {
-			// NO provider available
+	public void makeConnection() {
+
+		if (gpsOn) {
+
+			String best = locMan.getBestProvider(crit, true);
+			prov = locMan.getProvider(best);
+
+			if (prov != null) {
+				locMan.requestLocationUpdates(prov.getName(),
+						MIN_DISTANCE_CHANGE_FOR_UPDATES, MIN_TIME_BW_UPDATES,
+						this);
+
+			} else {
+				// NO provider available
+			}
+
+			loc = locMan.getLastKnownLocation(best);
 		}
 
-		loc = locMan.getLastKnownLocation(best);
-		
 	}
 
 	@Override
@@ -76,6 +93,7 @@ public class GpsService extends Service implements LocationListener {
 	public void onLocationChanged(Location l) {
 		// this.loc = new LatLng(l.getLatitude(), l.getLongitude());
 		this.loc = l;
+		placesSearch();
 
 	}
 
@@ -97,10 +115,78 @@ public class GpsService extends Service implements LocationListener {
 
 	}
 
+	GpsStatus.Listener gpsListener = new GpsStatus.Listener() {
+		public void onGpsStatusChanged(int event) {
+			if (event == GpsStatus.GPS_EVENT_STARTED) {
+				gpsOn = true;
+			} else if (event == GpsStatus.GPS_EVENT_STOPPED) {
+				gpsOn = false;
+			} else if (event == GpsStatus.GPS_EVENT_FIRST_FIX) {
+				gpsGotSignal = true;
+				GpsStatus status = locMan.getGpsStatus(null);
+				Iterator<GpsSatellite> sats = status.getSatellites().iterator();
+				int i = 0;
+				while (sats.hasNext()) {
+					sats.next();
+					i++;
+				}
+				Log.d("test", "got signal " + i + " satelites");
+			}
+		}
+	};
+
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
 		return START_STICKY;
+	}
+
+	private void placesSearch() {
+		if (this.getLoc() != null) {
+			PlacesSearch search = new PlacesSearch(this.getLoc(),
+					getApplicationContext());
+			setLijst(new ArrayList<Place>());
+			try {
+				setLijst(search.execute("").get());
+
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		} else {
+			Log.d("test", "No connection");
+			setLijst(null);
+		}
+
+	}
+
+	public void sendLocationToServer() {
+
+		// huidige locatie doorsturen
+
+	}
+
+	public void findNewPeople() {
+
+		// mensen zoeken in omgeving
+	}
+
+	public List<Place> getLijst() {
+		return lijst;
+	}
+
+	public void setLijst(List<Place> lijst) {
+		this.lijst = lijst;
+	}
+
+	public class LocalBinder extends Binder {
+		GpsService getService() {
+			return GpsService.this;
+		}
 	}
 
 	public Location getLoc() {
@@ -111,30 +197,20 @@ public class GpsService extends Service implements LocationListener {
 		this.loc = loc;
 	}
 
-	public void placesSearch() {
-		if (this.getLoc() != null) {
-			PlacesSearch search = new PlacesSearch(this.getLoc(),
-					getApplicationContext());
-			lijst = new ArrayList<Place>();
-			try {
-				lijst = search.execute("").get();
-				Log.d("test",lijst.get(1).getName());
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-			Log.d("test","No connection");
-		}
+	public Boolean getGpsOn() {
+		return gpsOn;
 	}
 
-	public class LocalBinder extends Binder {
-		GpsService getService() {
-			return GpsService.this;
-		}
+	public void setGpsOn(Boolean gpsOn) {
+		this.gpsOn = gpsOn;
+	}
+
+	public Boolean getGpsGotSignal() {
+		return gpsGotSignal;
+	}
+
+	public void setGpsGotSignal(Boolean gpsGotSignal) {
+		this.gpsGotSignal = gpsGotSignal;
 	}
 
 }

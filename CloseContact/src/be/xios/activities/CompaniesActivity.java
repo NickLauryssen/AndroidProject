@@ -9,6 +9,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.location.Address;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import be.xios.activities.GpsService.LocalBinder;
 import be.xios.model.CustomButton;
 import be.xios.model.Place;
@@ -27,37 +29,20 @@ public class CompaniesActivity extends Activity {
 	private GpsService gps;
 	boolean mBound = false;
 	private List<Place> lijst;
+	private ListView lv_array;
+	private CustomAdapter custAd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_buttonlist);
 
-		listButtons = new ArrayList<CustomButton>();
-		listButtons.add(new CustomButton("Xios Hogeschool", "You're here",
-				MainMenuActivity.class, R.drawable.ic_school, "normal"));
-		listButtons.add(new CustomButton("Uhasselt", "500m",
-				MainMenuActivity.class, R.drawable.ic_school, "normal"));
-		listButtons.add(new CustomButton("KHLim", "800m",
-				MainMenuActivity.class, R.drawable.ic_school, "normal"));
-		listButtons.add(new CustomButton("Show map", "-",
-				MainMenuActivity.class, R.drawable.ic_location, "flashy"));
-
-		CustomAdapter custAd = new CustomAdapter(this, this.listButtons);
-		ListView lv_array = (ListView) findViewById(R.id.listViewMainMenu);
-		lv_array.setAdapter(custAd);
-
-		lv_array.setOnItemClickListener(new ListViewHandler());
-
 		intent = new Intent(this, GpsService.class);
 		this.getApplicationContext();
 		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
-		
 	}
 
-	
-	
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
@@ -68,24 +53,54 @@ public class CompaniesActivity extends Activity {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main_menu, menu);
-		return true;
-	}
 
 	private class ListViewHandler implements OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
-			if (arg1.getTag().getClass() == CustomButton.class) {
-				CustomButton cb = (CustomButton) arg1.getTag();
+		public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
+			if (v.getTag().getClass() == CustomButton.class) {
+				CustomButton cb = (CustomButton) v.getTag();
 				Class<?> link = cb.getLink();
 
-				Intent peopleIntent = new Intent(getApplicationContext(), link);
-				startActivity(peopleIntent);
+				if (cb.getTitle().equals("Refresh")) {
+					addPlaces();
+
+				}
+
+				// Intent peopleIntent = new Intent(getApplicationContext(),
+				// link);
+				// startActivity(peopleIntent);
+
 			}
+
 		}
+	}
+
+	private void addPlaces() {
+
+		listButtons = new ArrayList<CustomButton>();
+		if (gps.getGpsGotSignal()) {
+			lijst = gps.getLijst();
+			for (int i = 0; i < lijst.size(); i++) {
+
+				listButtons.add(new CustomButton(lijst.get(i).getName(), lijst
+						.get(i).getDistance() + "m", MainMenuActivity.class,
+						R.drawable.ic_factory, "normal"));
+			}
+		} else {
+
+			listButtons.add(new CustomButton("GPS Signal",
+					"No satelites found", MainMenuActivity.class,
+					R.drawable.ic_factory, "normal"));
+		}
+		listButtons.add(new CustomButton("Refresh", "", MainMenuActivity.class,
+				R.drawable.ic_settings, "flashy"));
+
+		custAd = new CustomAdapter(getApplicationContext(), listButtons);
+		lv_array = (ListView) findViewById(R.id.listViewMainMenu);
+		lv_array.setAdapter(custAd);
+
+		lv_array.setOnItemClickListener(new ListViewHandler());
+
 	}
 
 	private ServiceConnection mConnection = new ServiceConnection() {
@@ -95,9 +110,8 @@ public class CompaniesActivity extends Activity {
 			LocalBinder binder = (LocalBinder) service;
 			gps = binder.getService();
 			mBound = true;
-			//gps.placesSearch();
 			
-			
+			addPlaces();
 
 		}
 
@@ -108,5 +122,4 @@ public class CompaniesActivity extends Activity {
 		}
 	};
 
-	
 }
