@@ -16,6 +16,7 @@ import be.xios.model.CustomButton;
 public class SettingsActivity extends Activity 
 {
 	private List<CustomButton> listButtons;
+	private CustomAdapter custAd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -29,7 +30,7 @@ public class SettingsActivity extends Activity
         listButtons.add(new CustomButton("Visit duration", "Minimum time for a visit to be saved", MainMenuActivity.class, R.drawable.ic_checkbox_false, "normal"));
         listButtons.add(new CustomButton("Contact notifier", "Notify me when a contact is nearby", MainMenuActivity.class, R.drawable.ic_checkbox_false, "normal"));
         
-        CustomAdapter custAd = new CustomAdapter(this, this.listButtons);
+        custAd = new CustomAdapter(this, this.listButtons);
         ListView lv_array = (ListView) findViewById(R.id.listViewMainMenu);
         lv_array.setAdapter(custAd);
         
@@ -51,10 +52,18 @@ public class SettingsActivity extends Activity
 			if(arg1.getTag().getClass() == CustomButton.class)
 			{
 				CustomButton cb = (CustomButton) arg1.getTag();
-				Class<?> link = cb.getLink();				
-
-				Intent peopleIntent = new Intent(getApplicationContext(), link);
-				startActivity(peopleIntent);
+				
+				if(cb.getIcon() == R.drawable.ic_checkbox_true)
+				{
+					cb.setIcon(R.drawable.ic_checkbox_false);
+					custAd.notifyDataSetChanged();
+					
+				}
+				else if(cb.getIcon() == R.drawable.ic_checkbox_false)
+				{
+					cb.setIcon(R.drawable.ic_checkbox_true);
+					custAd.notifyDataSetChanged();
+				}
 			}			
 		}    	
     }
