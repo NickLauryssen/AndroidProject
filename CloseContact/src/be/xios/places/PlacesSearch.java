@@ -1,4 +1,4 @@
-package be.xios.activities;
+package be.xios.places;
 
 import java.io.BufferedReader;
 
@@ -44,8 +44,7 @@ public class PlacesSearch extends AsyncTask<String, Void, List<Place>> {
 	protected List<Place> doInBackground(String... params) {
 
 		String url = "https://maps.googleapis.com/maps/api/place/search/json?location="
-				+ l.getLatitude() + "," + l.getLongitude() + "&radius=300&rankBy=distance"
-
+				+ l.getLatitude() + "," + l.getLongitude() + "&radius=300"
 				+ "&sensor=true&key=AIzaSyBJLs5OG75oQoph-RSu2UdHXudAoSi9xgw";
 		// HTTP
 		try {

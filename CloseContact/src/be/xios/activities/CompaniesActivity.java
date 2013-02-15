@@ -2,23 +2,20 @@ package be.xios.activities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.location.Address;
+
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
-import android.view.Menu;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 import be.xios.activities.GpsService.LocalBinder;
 import be.xios.model.CustomButton;
 import be.xios.model.Place;

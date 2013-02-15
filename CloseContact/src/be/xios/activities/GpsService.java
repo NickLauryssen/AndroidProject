@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import be.xios.model.Place;
+import be.xios.model.Visited;
+import be.xios.places.PlacesSearch;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +21,7 @@ import android.location.LocationProvider;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.method.DateTimeKeyListener;
 import android.util.Log;
 
 public class GpsService extends Service implements LocationListener {
@@ -29,15 +32,19 @@ public class GpsService extends Service implements LocationListener {
 	private Criteria crit;
 	private Location loc = null;
 	private List<Place> lijst;
+	
+	private List<Visited> visitedList;
 	private Boolean gpsOn = false;
 	private Boolean gpsGotSignal = false;
 
 	// The minimum distance to change Updates in meters
 	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // meters
 
-	// The minimum time between updates in milliseconds
-	private static final long MIN_TIME_BW_UPDATES = 5000; // 10sec
+	// The minimum time between updates in seconds
+	private static final long MIN_TIME_BW_UPDATES = 20;
 
+	private static final int MIN_DISTANCE_FOR_VISIT = 20;
+	
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
@@ -94,6 +101,8 @@ public class GpsService extends Service implements LocationListener {
 		// this.loc = new LatLng(l.getLatitude(), l.getLongitude());
 		this.loc = l;
 		placesSearch();
+		checkIfVisited();
+		
 
 	}
 
@@ -130,7 +139,7 @@ public class GpsService extends Service implements LocationListener {
 					sats.next();
 					i++;
 				}
-				Log.d("test", "got signal " + i + " satelites");
+			//	Log.d("test", "got signal " + i + " satelites");
 			}
 		}
 	};
@@ -174,6 +183,24 @@ public class GpsService extends Service implements LocationListener {
 
 		// mensen zoeken in omgeving
 	}
+	
+	
+	private void checkIfVisited(){
+		//Voorlopige versie: timer moet er nog in.
+		if (visitedList == null){
+		visitedList = new ArrayList<Visited>();
+		}
+		
+		for(int i = 0; i < this.getLijst().size(); i++){
+			if(lijst.get(i).getDistance() < MIN_DISTANCE_FOR_VISIT){
+				Visited visit = new Visited(lijst.get(i));
+				visitedList.add(visit);
+				
+			}
+			
+		}
+
+	}
 
 	public List<Place> getLijst() {
 		return lijst;
@@ -183,6 +210,14 @@ public class GpsService extends Service implements LocationListener {
 		this.lijst = lijst;
 	}
 
+	
+	public List<Visited> getVisitedList() {
+		return visitedList;
+	}
+	public void setVisitedList(List<Visited> visitedList) {
+		this.visitedList = visitedList;
+	}
+	
 	public class LocalBinder extends Binder {
 		GpsService getService() {
 			return GpsService.this;
