@@ -56,15 +56,18 @@ public class CompaniesActivity extends Activity {
 		public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
 			if (v.getTag().getClass() == CustomButton.class) {
 				CustomButton cb = (CustomButton) v.getTag();
-
+				Class<?> link = cb.getLink();
 				if (cb.getTitle().equals("Refresh")) {
 					addPlaces();
 
+				} else if(cb.getTitle().equals("Show map")){
+					
+					 Intent mapIntent = new Intent(getApplicationContext(),
+					 link);
+					 startActivity(mapIntent);
 				}
 
-				// Intent peopleIntent = new Intent(getApplicationContext(),
-				// link);
-				// startActivity(peopleIntent);
+				
 
 			}
 
@@ -88,7 +91,9 @@ public class CompaniesActivity extends Activity {
 					"No satelites found", MainMenuActivity.class,
 					R.drawable.ic_factory, "normal"));
 		}
-		listButtons.add(new CustomButton("Refresh", "", MainMenuActivity.class,
+		listButtons.add(new CustomButton("Refresh", "Search for new companies", MainMenuActivity.class,
+				R.drawable.ic_settings, "flashy"));
+		listButtons.add(new CustomButton("Show map", "View companies on a map", MapActivity.class,
 				R.drawable.ic_settings, "flashy"));
 
 		custAd = new CustomAdapter(getApplicationContext(), listButtons);
