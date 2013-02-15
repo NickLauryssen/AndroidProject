@@ -1,5 +1,9 @@
 package be.xios.activities;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+
 import be.xios.activities.GpsService.LocalBinder;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -13,16 +17,17 @@ public class MapActivity extends Activity {
 
 	private GpsService gps;
 	boolean mBound = false;
-	
+	private GoogleMap mMap;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_layout);
-		
+
 		Intent intent = new Intent(this, GpsService.class);
 		this.getApplicationContext();
 		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-		
+
 	}
 
 	@Override
@@ -34,7 +39,7 @@ public class MapActivity extends Activity {
 			mBound = false;
 		}
 	}
-	
+
 	private ServiceConnection mConnection = new ServiceConnection() {
 
 		@Override
@@ -42,7 +47,12 @@ public class MapActivity extends Activity {
 			LocalBinder binder = (LocalBinder) service;
 			gps = binder.getService();
 			mBound = true;
-		
+			mMap = ((MapFragment) getFragmentManager().findFragmentById(
+					R.id.map)).getMap();
+			if (gps.getLatlngLoc() != null) {
+				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+						gps.getLatlngLoc(), 15));
+			}
 
 		}
 

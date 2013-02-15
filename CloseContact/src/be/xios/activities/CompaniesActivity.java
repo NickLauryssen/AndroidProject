@@ -9,9 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.IBinder;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -20,7 +23,7 @@ import be.xios.activities.GpsService.LocalBinder;
 import be.xios.model.CustomButton;
 import be.xios.model.Place;
 
-public class CompaniesActivity extends Activity {
+public class CompaniesActivity extends Activity{
 	private List<CustomButton> listButtons;
 	private Intent intent;
 	private GpsService gps;
@@ -85,6 +88,8 @@ public class CompaniesActivity extends Activity {
 						.get(i).getDistance() + "m", MainMenuActivity.class,
 						R.drawable.ic_factory, "normal"));
 			}
+			listButtons.add(new CustomButton("Show map", "View companies on a map", MapActivity.class,
+					R.drawable.ic_settings, "flashy"));
 		} else {
 
 			listButtons.add(new CustomButton("GPS Signal",
@@ -93,8 +98,7 @@ public class CompaniesActivity extends Activity {
 		}
 		listButtons.add(new CustomButton("Refresh", "Search for new companies", MainMenuActivity.class,
 				R.drawable.ic_settings, "flashy"));
-		listButtons.add(new CustomButton("Show map", "View companies on a map", MapActivity.class,
-				R.drawable.ic_settings, "flashy"));
+		
 
 		custAd = new CustomAdapter(getApplicationContext(), listButtons);
 		lv_array = (ListView) findViewById(R.id.listViewMainMenu);
@@ -111,7 +115,7 @@ public class CompaniesActivity extends Activity {
 			LocalBinder binder = (LocalBinder) service;
 			gps = binder.getService();
 			mBound = true;
-			
+			gps.makeConnection();
 			addPlaces();
 
 		}
@@ -122,5 +126,7 @@ public class CompaniesActivity extends Activity {
 
 		}
 	};
+
+	
 
 }
