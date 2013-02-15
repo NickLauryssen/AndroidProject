@@ -36,7 +36,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyA67LqnroLHpCOI1enjJarRDEbYdneOJwA" />
+            android:value="AIzaSyBZk8rWbN1I6Q0o7N-X7Rrx-tW8FLTHTac" />
 
         <activity
             android:name="be.xios.activities.MainMenuActivity"

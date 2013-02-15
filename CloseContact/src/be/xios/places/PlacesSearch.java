@@ -38,7 +38,7 @@ public class PlacesSearch extends AsyncTask<String, Void, List<Place>> {
 
 		String url = "https://maps.googleapis.com/maps/api/place/search/json?location="
 				+ l.getLatitude() + "," + l.getLongitude() + "&radius=300"
-				+ "&sensor=true&key=AIzaSyBJLs5OG75oQoph-RSu2UdHXudAoSi9xgw";
+				+ "&sensor=true&key=AIzaSyA0rszT72tKjJOdguQOfTEpMgl8vR1bVOA";
 		// HTTP
 		try {
 			HttpClient httpclient = new DefaultHttpClient(); // for port 80
