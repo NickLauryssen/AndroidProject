@@ -5,9 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import be.xios.model.Place;
-import be.xios.model.Visited;
-import be.xios.places.PlacesSearch;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -21,8 +18,10 @@ import android.location.LocationProvider;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.text.method.DateTimeKeyListener;
 import android.util.Log;
+import be.xios.model.Place;
+import be.xios.model.Visited;
+import be.xios.places.PlacesSearch;
 
 public class GpsService extends Service implements LocationListener {
 

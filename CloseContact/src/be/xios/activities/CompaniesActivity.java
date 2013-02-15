@@ -56,7 +56,6 @@ public class CompaniesActivity extends Activity {
 		public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
 			if (v.getTag().getClass() == CustomButton.class) {
 				CustomButton cb = (CustomButton) v.getTag();
-				Class<?> link = cb.getLink();
 
 				if (cb.getTitle().equals("Refresh")) {
 					addPlaces();
