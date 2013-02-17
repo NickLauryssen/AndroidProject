@@ -23,7 +23,7 @@ import be.xios.activities.GpsService.LocalBinder;
 import be.xios.model.CustomButton;
 import be.xios.model.Place;
 
-public class CompaniesActivity extends Activity{
+public class CompaniesActivity extends Activity {
 	private List<CustomButton> listButtons;
 	private Intent intent;
 	private GpsService gps;
@@ -38,7 +38,7 @@ public class CompaniesActivity extends Activity{
 		setContentView(R.layout.layout_buttonlist);
 
 		intent = new Intent(this, GpsService.class);
-		this.getApplicationContext();
+
 		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
 	}
@@ -53,7 +53,6 @@ public class CompaniesActivity extends Activity{
 		}
 	}
 
-
 	private class ListViewHandler implements OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
@@ -63,19 +62,17 @@ public class CompaniesActivity extends Activity{
 				if (cb.getTitle().equals("Refresh")) {
 					addPlaces();
 
-				} else if(cb.getTitle().equals("Show map")){
-					
-					 Intent mapIntent = new Intent(getApplicationContext(),
-					 link);
-					 startActivity(mapIntent);
-				}
+				} else if (cb.getTitle().equals("Show map")) {
 
-				
+					Intent mapIntent = new Intent(getApplicationContext(), link);
+					startActivity(mapIntent);
+				}
 
 			}
 
 		}
 	}
+
 
 	private void addPlaces() {
 
@@ -85,10 +82,11 @@ public class CompaniesActivity extends Activity{
 			for (int i = 0; i < lijst.size(); i++) {
 
 				listButtons.add(new CustomButton(lijst.get(i).getName(), lijst
-						.get(i).getDistance() + "m", MainMenuActivity.class,
+						.get(i).getDistance() + "m", PeopleActivity.class,
 						R.drawable.ic_factory, "normal"));
 			}
-			listButtons.add(new CustomButton("Show map", "View companies on a map", MapActivity.class,
+			listButtons.add(new CustomButton("Show map",
+					"View companies on a map", MapActivity.class,
 					R.drawable.ic_settings, "flashy"));
 		} else {
 
@@ -96,11 +94,10 @@ public class CompaniesActivity extends Activity{
 					"No satelites found", MainMenuActivity.class,
 					R.drawable.ic_factory, "normal"));
 		}
-		listButtons.add(new CustomButton("Refresh", "Search for new companies", MainMenuActivity.class,
-				R.drawable.ic_settings, "flashy"));
-		
+		listButtons.add(new CustomButton("Refresh", "Search for new companies",
+				MainMenuActivity.class, R.drawable.ic_settings, "flashy"));
 
-		custAd = new CustomAdapter(getApplicationContext(), listButtons);
+		custAd = new CustomAdapter(this, listButtons);
 		lv_array = (ListView) findViewById(R.id.listViewMainMenu);
 		lv_array.setAdapter(custAd);
 
@@ -126,7 +123,5 @@ public class CompaniesActivity extends Activity{
 
 		}
 	};
-
-	
 
 }
